@@ -6,4 +6,5 @@ test('successful login with valid credentials redirects to inventory', async ({ 
   await page.fill('[data-test="password"]', 'secret_sauce');
   await page.click('[data-test="login-button"]');
   await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+  await expect(page.locator('[data-test="title"]')).toHaveText('Products');
 });
