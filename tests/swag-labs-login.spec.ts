@@ -2,8 +2,11 @@ import { test, expect } from '@playwright/test';
 
 test.describe('Sign in', () => {
 
-  test('successful login with valid credentials redirects to inventory', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('https://www.saucedemo.com/');
+  });
+  
+  test('successful login with valid credentials redirects to inventory', async ({ page }) => {
     await page.fill('[data-test="username"]', 'standard_user');
     await page.fill('[data-test="password"]', 'secret_sauce');
     await page.click('[data-test="login-button"]');
@@ -12,7 +15,6 @@ test.describe('Sign in', () => {
   });
 
   test('unsuccessful login with invalid credentials shows error message', async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/');
     await page.fill('[data-test="username"]', 'locked_out_user');
     await page.fill('[data-test="password"]', 'secret_sauce');
     await page.click('[data-test="login-button"]');
