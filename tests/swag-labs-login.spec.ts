@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { randomString } from './utils/fake-data';
 
 test.describe('Sign in', () => {
 
@@ -35,4 +36,10 @@ test.describe('Sign in', () => {
     await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Password is required');
   });
 
+  test('random username and password', async ({ page }) => {
+    await page.fill('[data-test="username"]', randomString());
+    await page.fill('[data-test="password"]', randomString(25));
+    await page.click('[data-test="login-button"]');
+    await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Username and password do not match any user in this service');
+  });
 })
