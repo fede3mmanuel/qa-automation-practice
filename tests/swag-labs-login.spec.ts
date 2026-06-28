@@ -37,8 +37,17 @@ test.describe('Sign in', () => {
   });
 
   test('random username and password', async ({ page }) => {
-    await page.fill('[data-test="username"]', randomString());
-    await page.fill('[data-test="password"]', randomString(25));
+
+    const randomUsername = randomString();
+    const randomPassword = randomString(25);
+
+    await test.info().attach('credentials', {
+      body: JSON.stringify({ username: randomUsername, password: randomPassword }),
+      contentType: 'application/json',
+    });
+
+    await page.fill('[data-test="username"]', randomUsername);
+    await page.fill('[data-test="password"]', randomPassword);
     await page.click('[data-test="login-button"]');
     await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Username and password do not match any user in this service');
   });
