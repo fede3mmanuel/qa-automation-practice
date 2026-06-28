@@ -69,4 +69,19 @@ test.describe('cart', () => {
     await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
   });
 
+  test('remove sauce labs backpack from cart', async ({ page }) => {
+    await page.fill('[data-test="username"]', 'standard_user');
+    await page.fill('[data-test="password"]', 'secret_sauce');
+    await page.click('[data-test="login-button"]');
+    await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+    await expect(page.locator('[data-test="title"]')).toHaveText('Products');
+    await page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
+    await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+    await page.click('[data-test="shopping-cart-link"]');
+    await expect(page).toHaveURL('https://www.saucedemo.com/cart.html');
+    await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
+    await page.click('[data-test="remove-sauce-labs-backpack"]');
+    await expect(page.locator('[data-test="shopping-cart-badge"]')).not.toBeAttached();
+  });
+
 })
