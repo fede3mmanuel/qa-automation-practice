@@ -5,7 +5,7 @@ test.describe('Sign in', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('https://www.saucedemo.com/');
   });
-  
+
   test('successful login with valid credentials redirects to inventory', async ({ page }) => {
     await page.fill('[data-test="username"]', 'standard_user');
     await page.fill('[data-test="password"]', 'secret_sauce');
@@ -19,6 +19,13 @@ test.describe('Sign in', () => {
     await page.fill('[data-test="password"]', 'secret_sauce');
     await page.click('[data-test="login-button"]');
     await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Sorry, this user has been locked out.');
+  });
+
+  test('empty username', async ({ page }) => {
+    await page.fill('[data-test="username"]', '');
+    await page.fill('[data-test="password"]', 'secret_sauce');
+    await page.click('[data-test="login-button"]');
+    await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Username is required');
   });
 
 })
