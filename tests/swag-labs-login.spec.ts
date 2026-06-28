@@ -28,4 +28,11 @@ test.describe('Sign in', () => {
     await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Username is required');
   });
 
+  test('empty password', async ({ page }) => {
+    await page.fill('[data-test="username"]', 'standard_user');
+    await page.fill('[data-test="password"]', '');
+    await page.click('[data-test="login-button"]');
+    await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Password is required');
+  });
+
 })
