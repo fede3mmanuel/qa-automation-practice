@@ -52,3 +52,21 @@ test.describe('Sign in', () => {
     await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Username and password do not match any user in this service');
   });
 })
+
+test.describe('cart', () => {
+
+  test.beforeEach(async ({ page }) => {
+    await page.goto('https://www.saucedemo.com/');
+  });
+
+  test('add sauce labs backpack to cart', async ({ page }) => {
+    await page.fill('[data-test="username"]', 'standard_user');
+    await page.fill('[data-test="password"]', 'secret_sauce');
+    await page.click('[data-test="login-button"]');
+    await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+    await expect(page.locator('[data-test="title"]')).toHaveText('Products');
+    await page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
+    await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+  });
+
+})
