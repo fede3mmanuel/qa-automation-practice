@@ -6,7 +6,7 @@ test.describe('Sign in', () => {
 
   test.beforeEach(async ({ page }) => {
     const loginPage = new LoginPage(page);
-    loginPage.goto();
+    await loginPage.goto();
   });
 
   test('successful login with valid credentials redirects to inventory', async ({ page }) => {
