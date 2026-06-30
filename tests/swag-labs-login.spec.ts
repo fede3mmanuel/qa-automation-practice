@@ -1,10 +1,12 @@
 import { test, expect } from '@playwright/test';
 import { randomString } from './utils/fake-data';
+import { LoginPage } from './pages/LoginPage';
 
 test.describe('Sign in', () => {
 
   test.beforeEach(async ({ page }) => {
-    await page.goto('https://www.saucedemo.com/');
+    const loginPage = new LoginPage(page);
+    loginPage.goto();
   });
 
   test('successful login with valid credentials redirects to inventory', async ({ page }) => {
