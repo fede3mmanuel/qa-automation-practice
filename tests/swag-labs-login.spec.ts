@@ -17,9 +17,8 @@ test.describe('Sign in', () => {
   });
 
   test('unsuccessful login with invalid credentials shows error message', async ({ page }) => {
-    await page.fill('[data-test="username"]', 'locked_out_user');
-    await page.fill('[data-test="password"]', 'secret_sauce');
-    await page.click('[data-test="login-button"]');
+    const loginPage = new LoginPage(page);
+    await loginPage.login('locked_out_user', 'secret_sauce');
     await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Sorry, this user has been locked out.');
   });
 
