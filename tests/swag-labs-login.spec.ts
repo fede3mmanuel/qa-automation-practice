@@ -23,9 +23,8 @@ test.describe('Sign in', () => {
   });
 
   test('empty username', async ({ page }) => {
-    await page.fill('[data-test="username"]', '');
-    await page.fill('[data-test="password"]', 'secret_sauce');
-    await page.click('[data-test="login-button"]');
+    const loginPage = new LoginPage(page);
+    await loginPage.login('', 'secret_sauce');
     await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Username is required');
   });
 
