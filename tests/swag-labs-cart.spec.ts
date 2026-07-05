@@ -45,9 +45,7 @@ test.describe('cart', () => {
     await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
     await page.click('[data-test="checkout"]');
     await expect(page).toHaveURL('https://www.saucedemo.com/checkout-step-one.html');
-    await page.fill('[data-test="firstName"]', 'John');
-    await page.fill('[data-test="lastName"]', 'Doe');
-    await page.fill('[data-test="postalCode"]', '12345');
+    await cartPage.fillFirstnameLastnameZip('John', 'Doe', '12345');
     await page.click('[data-test="continue"]');
     await expect(page).toHaveURL('https://www.saucedemo.com/checkout-step-two.html');
     await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Overview');
