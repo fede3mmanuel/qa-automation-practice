@@ -70,7 +70,8 @@ test.describe('cart', () => {
     await loginPage.login('standard_user', 'secret_sauce');
     await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
     await expect(page.locator('[data-test="title"]')).toHaveText('Products');
-    await page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
+    const cartPage = new CartPage(page);
+    await cartPage.addToCart('add-to-cart-sauce-labs-backpack');
     await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
     await page.click('[data-test="shopping-cart-link"]');
     await expect(page).toHaveURL('https://www.saucedemo.com/cart.html');
