@@ -29,9 +29,8 @@ test.describe('Sign in', () => {
   });
 
   test('empty password', async ({ page }) => {
-    await page.fill('[data-test="username"]', 'standard_user');
-    await page.fill('[data-test="password"]', '');
-    await page.click('[data-test="login-button"]');
+    const loginPage = new LoginPage(page);
+    await loginPage.login('standard_user', '');
     await expect(page.locator('[data-test="error"]')).toHaveText('Epic sadface: Password is required');
   });
 
