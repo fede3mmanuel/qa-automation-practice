@@ -31,4 +31,37 @@ test.describe('cart', () => {
     await expect(page.locator('[data-test="shopping-cart-badge"]')).not.toBeAttached();
   });
 
+  test('full purchase flow', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await loginPage.login('standard_user', 'secret_sauce');
+    await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+    await expect(page.locator('[data-test="title"]')).toHaveText('Products');
+    const cartPage = new CartPage(page);
+    await cartPage.addToCart('add-to-cart-sauce-labs-backpack');
+    await expect(page.locator('[data-test="shopping-cart-badge"]')).toHaveText('1');
+    await page.click('[data-test="shopping-cart-link"]');
+    await expect(page).toHaveURL('https://www.saucedemo.com/cart.html');
+    await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
+    await page.click('[data-test="checkout"]');
+    await expect(page).toHaveURL('https://www.saucedemo.com/checkout-step-one.html');
+    await page.fill('[data-test="firstName"]', 'John');
+    await page.fill('[data-test="lastName"]', 'Doe');
+    await page.fill('[data-test="postalCode"]', '12345');
+    await page.click('[data-test="continue"]');
+    await expect(page).toHaveURL('https://www.saucedemo.com/checkout-step-two.html');
+    await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Overview');
+    await page.click('[data-test="finish"]');
+    await expect(page).toHaveURL('https://www.saucedemo.com/checkout-complete.html');
+    await expect(page.locator('[data-test="title"]')).toHaveText('Checkout: Complete!');
+    await expect(page.locator('[data-test="complete-header"]')).toHaveText('Thank you for your order!');
+    await expect(page.locator('[data-test="complete-text"]')).toHaveText('Your order has been dispatched, and will arrive just as fast as the pony can get there!');
+    await expect(page.locator('[data-test="back-to-products"]')).toHaveText('Back Home');
+    await page.click('[data-test="back-to-products"]');
+    await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
+    await expect(page.locator('[data-test="title"]')).toHaveText('Products');
+  });
+
 })
+
+
