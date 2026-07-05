@@ -57,9 +57,9 @@ test.describe('cart', () => {
   });
 
   test('add sauce labs backpack to cart', async ({ page }) => {
-    await page.fill('[data-test="username"]', 'standard_user');
-    await page.fill('[data-test="password"]', 'secret_sauce');
-    await page.click('[data-test="login-button"]');
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await loginPage.login('standard_user', 'secret_sauce');
     await expect(page).toHaveURL('https://www.saucedemo.com/inventory.html');
     await expect(page.locator('[data-test="title"]')).toHaveText('Products');
     await page.click('[data-test="add-to-cart-sauce-labs-backpack"]');
