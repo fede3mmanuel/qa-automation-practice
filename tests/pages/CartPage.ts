@@ -7,4 +7,8 @@ export class CartPage {
     async addToCart(dataTestId: string) {
         await this.page.click(`[data-test="${dataTestId}"]`);
     }
+
+    async removeFromCart(dataTestId: string) {
+        await this.page.click(`[data-test="${dataTestId}"]`);
+    }
 }

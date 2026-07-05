@@ -76,7 +76,7 @@ test.describe('cart', () => {
     await page.click('[data-test="shopping-cart-link"]');
     await expect(page).toHaveURL('https://www.saucedemo.com/cart.html');
     await expect(page.locator('[data-test="title"]')).toHaveText('Your Cart');
-    await page.click('[data-test="remove-sauce-labs-backpack"]');
+    await cartPage.removeFromCart('remove-sauce-labs-backpack');
     await expect(page.locator('[data-test="shopping-cart-badge"]')).not.toBeAttached();
   });
 
