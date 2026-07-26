@@ -11,4 +11,9 @@ test.describe('jsonplaceholder test api', () => {
 
     });
 
+    test('get 404 error for user 22', async ({ request }) => {
+        const response = await request.get('https://jsonplaceholder.typicode.com/users/22');
+        expect(response.status()).toBe(404);
+    });
+
 });
