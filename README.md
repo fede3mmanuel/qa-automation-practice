@@ -12,6 +12,7 @@ End-to-end test automation framework built from scratch with Playwright + TypeSc
 Playwright | TypeScript | GitHub Actions | axe-core | JSONPlaceholder
 
 ## Project Structure
+```
 tests/
 ├── swag-labs-login.spec.ts      # 5 login tests
 ├── swag-labs-cart.spec.ts       # 3 cart/checkout tests
@@ -24,6 +25,7 @@ tests/
 │   └── CartPage.ts
 └── utils/
     └── fake-data.ts
+```
 
 ## Accessibility Testing
 
@@ -31,7 +33,7 @@ Automated WCAG 2.0/2.1 A & AA scans with axe-core, reusing the existing
 Page Objects across key application states — axe-core only analyzes the
 rendered DOM, so each state of the flow is scanned separately:
 home (login) → inventory → cart.
-Scope: .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+Scope: `.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])`
 
 ### Results (verified 2026-09-02)
 
@@ -57,8 +59,10 @@ Scope: .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
   region) — outside the A/AA scope, kept here as evidence of scope reasoning.
 
 ## Run Tests
+```
 npm install
 npx playwright test
+```
 
 ## CI/CD
 Every push triggers GitHub Actions.
