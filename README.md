@@ -90,3 +90,8 @@ npx playwright test
 ## CI/CD
 Every push triggers GitHub Actions.
 Results: github.com/fede3mmanuel/qa-automation-practice/actions
+
+The latest Monocart report (with JS/CSS coverage) is uploaded as a
+downloadable artifact on every CI run:
+Actions → latest run → Artifacts → `playwright-report` (retained 30 days).
+The most recent report is also committed to the repo under `monocart-report/`.
