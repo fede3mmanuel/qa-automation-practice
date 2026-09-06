@@ -1,15 +1,42 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 import AxeBuilder from '@axe-core/playwright';
 import { LoginPage } from '../pages/LoginPage';
 import { CartPage } from '../pages/CartPage';
 
 test.describe('Accessibility tests', () => {
-  test('Home page: Should not have any automatically detectable accessibility issues', async ({ page }) => {
+
+  test.beforeEach('Console logs', async ({ page }, testInfo) => {
+
+      page.on('console', async msg => {
+      const values = [];
+      for (const arg of msg.args())
+        values.push(await arg.jsonValue());
+      console.log(...values);
+
+      if (values.length > 0) {
+
+        await testInfo.attach('Console Logs', { body: JSON.stringify(values, null, 2),
+        contentType: 'application/json' });
+
+      }
+    });
+
+  });
+
+  test('Home page: Should not have any automatically detectable accessibility issues', async ({ page }, testInfo) => {
     await page.goto('https://www.saucedemo.com/'); 
 
     const accessibilityScanResults = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze();
 
+    await testInfo.attach('accessibility-scan-results', {
+      body: JSON.stringify(accessibilityScanResults, null, 2),
+      contentType: 'application/json'
+    });
+
     expect(accessibilityScanResults.violations).toEqual([]); 
+
+    const screenshot = await page.screenshot();
+    await testInfo.attach('screenshot', { body: screenshot, contentType: 'image/png' });
   });
 
   test('Inventory page: Should not have any automatically detectable accessibility issues', async ({ page }) => {
