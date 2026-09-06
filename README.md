@@ -3,13 +3,14 @@
 End-to-end test automation framework built from scratch with Playwright + TypeScript.
 
 ## Stats
-- 14 automated tests (8 UI + 3 API + 3 accessibility)
+- 14 automated tests (8 UI + 3 API + 3 accessibility) × 3 browsers (Chromium, Firefox, WebKit) = 42 executions per run
 - Page Object Model architecture
 - 100% TypeScript
 - CI/CD on every push (GitHub Actions)
+- JS/CSS code coverage reporting with Monocart Reporter
 
 ## Tech Stack
-Playwright | TypeScript | GitHub Actions | axe-core | JSONPlaceholder
+Playwright | TypeScript | GitHub Actions | axe-core | monocart-reporter | JSONPlaceholder
 
 ## Project Structure
 ```
@@ -19,13 +20,30 @@ tests/
 ├── api/
 │   └── reqres-api.spec.ts       # 3 CRUD tests
 ├── accessibility/
-│   └── a11y.spec.ts             # 3 WCAG accessibility scans
+│   ├── a11y.spec.ts             # 3 WCAG accessibility scans
+│   └── fixtures.ts              # coverage collection fixture (CDP)
 ├── pages/                       # Page Objects
 │   ├── LoginPage.ts
 │   └── CartPage.ts
 └── utils/
     └── fake-data.ts
+monocart-report/                 # latest HTML report + coverage (committed intentionally — see Design decisions)
 ```
+
+## Test Reporting & Coverage
+
+The suite reports through **Monocart Reporter**: a single-file HTML report
+with per-test results, attachments, and **JS/CSS code coverage** collected
+via Chrome DevTools Protocol (custom Playwright fixture in
+`tests/accessibility/fixtures.ts` — coverage starts before each test and is
+stopped and reported after it).
+
+Latest local run (2026-09-06): **42 executions — 39 passed, 3 failed**.
+The 3 failures are the *same* accessibility test (Inventory page) running on
+the 3 browsers — see "Why is the CI red?" below.
+
+- Full report: [`monocart-report/index.html`](monocart-report/index.html)
+- Coverage (lcov): [`monocart-report/coverage/lcov.info`](monocart-report/coverage/lcov.info)
 
 ## Accessibility Testing
 
@@ -46,9 +64,14 @@ Scope: `.withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])`
 ### Design decisions
 
 - **Why is the CI red?** Intentionally. The pipeline fails because the suite
-  detects a real, critical WCAG violation in SauceDemo's inventory page.
+  detects a real, critical WCAG violation in SauceDemo's inventory page
+  (the failing test is the Inventory scan, on all 3 browsers).
   A green badge achieved by hiding real findings would defeat the purpose
   of a QA portfolio — the red pipeline IS the finding, documented here.
+- **Why is `monocart-report/` committed to the repo?** Also intentionally.
+  Keeping the latest report versioned makes the evidence visible to anyone
+  reviewing the repo — no need to clone, install, or run anything to see
+  results and coverage.
 - **Soft assertions in inventory/cart**: the suite keeps running and reports
   every violation found instead of stopping at the first one. The goal is
   a complete report, not a quick pass/fail.
